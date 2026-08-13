@@ -1,0 +1,36 @@
+---
+layout: page
+permalink: /categories/
+title: Categories
+subtitle: Posts grouped by subject.
+description: Posts by Shridhar Shah, grouped by category.
+---
+
+{% if site.categories.size > 0 %}
+  {% assign sorted = site.categories | sort %}
+  {% for entry in sorted %}
+    {% assign name = entry[0] %}
+    {% assign posts = entry[1] %}
+<section id="{{ name | slugify }}">
+  <h2>{{ name }} <span class="count">{{ posts.size }} post{% if posts.size != 1 %}s{% endif %}</span></h2>
+  <ul class="entries">
+    {% for post in posts %}
+    <li>
+      <a href="{{ post.url | relative_url }}">
+        <span class="entry-date">{{ post.date | date: "%b %-d, %Y" }}</span>
+        <span class="entry-title">{{ post.title }}</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+  {% endfor %}
+{% else %}
+<section>
+  <h2>No categories yet</h2>
+  <p class="muted">
+    Categories appear here automatically once posts are published. Add
+    <code>categories: [Engineering]</code> to a post's front matter and it shows up.
+  </p>
+</section>
+{% endif %}

@@ -1,0 +1,46 @@
+---
+layout: page
+permalink: /tags/
+title: Tags
+subtitle: Every tag, and what sits under it.
+description: Posts by Shridhar Shah, grouped by tag.
+---
+
+{% if site.tags.size > 0 %}
+<section>
+  <h2>All tags <span class="count">{{ site.tags.size }}</span></h2>
+  <p class="chips">
+    {% assign sorted = site.tags | sort %}
+    {% for entry in sorted %}
+      <a class="chip" href="#{{ entry[0] | slugify }}">{{ entry[0] }} <span class="chip-n">{{ entry[1].size }}</span></a>
+    {% endfor %}
+  </p>
+</section>
+
+  {% assign sorted = site.tags | sort %}
+  {% for entry in sorted %}
+    {% assign name = entry[0] %}
+    {% assign posts = entry[1] %}
+<section id="{{ name | slugify }}">
+  <h2>{{ name }} <span class="count">{{ posts.size }} post{% if posts.size != 1 %}s{% endif %}</span></h2>
+  <ul class="entries">
+    {% for post in posts %}
+    <li>
+      <a href="{{ post.url | relative_url }}">
+        <span class="entry-date">{{ post.date | date: "%b %-d, %Y" }}</span>
+        <span class="entry-title">{{ post.title }}</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+  {% endfor %}
+{% else %}
+<section>
+  <h2>No tags yet</h2>
+  <p class="muted">
+    Tags appear here automatically once posts are published. Add
+    <code>tags: [go, kubernetes]</code> to a post's front matter and it shows up.
+  </p>
+</section>
+{% endif %}

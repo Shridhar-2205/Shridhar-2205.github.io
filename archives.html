@@ -1,0 +1,42 @@
+---
+layout: page
+permalink: /archives/
+title: Archives
+subtitle: Everything in reverse order, by year.
+description: A chronological archive of posts by Shridhar Shah.
+---
+
+{% if site.posts.size > 0 %}
+  {% assign current_year = "" %}
+  {% for post in site.posts %}
+    {% assign year = post.date | date: "%Y" %}
+    {% if year != current_year %}
+      {% unless forloop.first %}
+  </ul>
+</section>
+      {% endunless %}
+<section>
+  <h2>{{ year }}</h2>
+  <ul class="entries">
+      {% assign current_year = year %}
+    {% endif %}
+    <li>
+      <a href="{{ post.url | relative_url }}">
+        <span class="entry-date">{{ post.date | date: "%b %-d" }}</span>
+        <span class="entry-title">{{ post.title }}</span>
+      </a>
+    </li>
+    {% if forloop.last %}
+  </ul>
+</section>
+    {% endif %}
+  {% endfor %}
+{% else %}
+<section>
+  <h2>No posts yet</h2>
+  <p class="muted">
+    This fills in by year as posts are published. Current writing lives on
+    <a href="https://dev.to/shridhar_shah2297">dev.to</a>.
+  </p>
+</section>
+{% endif %}

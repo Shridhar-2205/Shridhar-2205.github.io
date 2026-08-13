@@ -1,0 +1,41 @@
+title: Shridhar Shah
+tagline: Senior Software Engineer at Cisco
+description: >-
+  Shridhar Shah — Senior Software Engineer in the SF Bay Area building agentic AI
+  infrastructure and cloud platforms in Go and Python. Almost a decade in tech across
+  networking, service mesh, RAG, and multi-agent systems.
+url: "https://shridhar-2205.github.io"
+lang: en
+timezone: America/Los_Angeles
+
+permalink: /posts/:title/
+
+# Cookieless analytics. Set to the code chosen at goatcounter.com signup
+# (the subdomain in https://<code>.goatcounter.com). Empty disables the script.
+goatcounter_code: ""
+
+markdown: kramdown
+kramdown:
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: highlight
+
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - RELEASE.md
+  - scripts/
+  - vendor/
+  - "*.pdf"

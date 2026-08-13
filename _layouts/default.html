@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#07080b">
+
+{%- assign head_title = page.seo_title | default: page.title -%}
+{%- assign head_desc = page.description | default: site.description -%}
+<title>{% if page.seo_title %}{{ head_title }}{% else %}{{ head_title }} · {{ site.title }}{% endif %}</title>
+<meta name="description" content="{{ head_desc | strip_newlines | strip }}">
+<link rel="canonical" href="{{ page.url | absolute_url }}">
+
+<meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
+<meta property="og:title" content="{{ head_title }}">
+<meta property="og:description" content="{{ head_desc | strip_newlines | strip }}">
+<meta property="og:url" content="{{ page.url | absolute_url }}">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="{{ '/feed.xml' | relative_url }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ '/styles.css' | relative_url }}">
+
+{%- if site.goatcounter_code and site.goatcounter_code != "" %}
+<script data-goatcounter="https://{{ site.goatcounter_code }}.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+{%- endif %}
+</head>
+<body class="{{ page.body_class }}">
+
+<div class="progress" aria-hidden="true"></div>
+<div class="spotlight" aria-hidden="true"></div>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="{{ '/' | relative_url }}">Shridhar Shah</a>
+    <nav class="tabs" aria-label="Sections">
+      {%- assign in_blog = false -%}
+      {%- if page.layout == 'post' or page.url == '/blog/' -%}{%- assign in_blog = true -%}{%- endif -%}
+      <a class="tab{% if page.url == '/' %} on{% endif %}" href="{{ '/' | relative_url }}">Home</a>
+      <a class="tab{% if in_blog %} on{% endif %}" href="{{ '/blog/' | relative_url }}">Blog</a>
+      <a class="tab{% if page.url == '/categories/' %} on{% endif %}" href="{{ '/categories/' | relative_url }}">Categories</a>
+      <a class="tab{% if page.url == '/tags/' %} on{% endif %}" href="{{ '/tags/' | relative_url }}">Tags</a>
+      <a class="tab{% if page.url == '/archives/' %} on{% endif %}" href="{{ '/archives/' | relative_url }}">Archives</a>
+    </nav>
+  </div>
+</div>
+
+{{ content }}
+
+<footer>
+  <div class="wrap">
+    <p>© <span id="year">{{ site.time | date: '%Y' }}</span> {{ site.title }}</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const motionOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (motionOk && 'IntersectionObserver' in window) {
+    const targets = document.querySelectorAll('main section, main .post-body');
+    targets.forEach((el) => el.classList.add('reveal'));
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    targets.forEach((el) => observer.observe(el));
+  }
+
+  if (motionOk) {
+    const bar = document.querySelector('.progress');
+    let ticking = false;
+
+    const drawProgress = () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = scrollable > 0 ? window.scrollY / scrollable : 0;
+      bar.style.setProperty('--p', Math.min(1, Math.max(0, ratio)));
+      ticking = false;
+    };
+
+    addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(drawProgress);
+    }, { passive: true });
+    drawProgress();
+
+    // Spotlight only makes sense for a real pointer.
+    if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      const glow = document.querySelector('.spotlight');
+      let queued = false;
+      let x = 0;
+      let y = 0;
+
+      addEventListener('pointermove', (event) => {
+        x = event.clientX;
+        y = event.clientY;
+        glow.classList.add('lit');
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(() => {
+          glow.style.setProperty('--mx', x + 'px');
+          glow.style.setProperty('--my', y + 'px');
+          queued = false;
+        });
+      }, { passive: true });
+    }
+  }
+</script>
+</body>
+</html>

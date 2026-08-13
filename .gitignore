@@ -1,0 +1,25 @@
+# Only site content ships. Everything below stays local.
+
+# Resume and personal files
+*.pdf
+
+# Notes and drafts, except real blog posts
+*.md
+!_posts/*.md
+!_posts/**/*.md
+
+# Local tooling
+scripts/
+.venv/
+__pycache__/
+*.pyc
+
+# Jekyll build output
+_site/
+.jekyll-cache/
+.jekyll-metadata
+Gemfile.lock
+vendor/
+
+# OS noise
+.DS_Store

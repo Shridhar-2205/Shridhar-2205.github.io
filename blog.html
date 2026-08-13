@@ -1,0 +1,33 @@
+---
+layout: page
+permalink: /blog/
+title: Blog
+subtitle: Notes on backend infrastructure and applied AI, written here rather than anywhere else.
+description: Writing by Shridhar Shah on backend infrastructure, distributed systems, and applied AI.
+---
+
+{% if site.posts.size > 0 %}
+<section>
+  <h2>All posts <span class="count">{{ site.posts.size }}</span></h2>
+  <ul class="entries">
+    {% for post in site.posts %}
+    <li>
+      <a href="{{ post.url | relative_url }}">
+        <span class="entry-date">{{ post.date | date: "%b %-d, %Y" }}</span>
+        <span class="entry-title">{{ post.title }}</span>
+        {% if post.subtitle %}<span class="entry-sub">{{ post.subtitle }}</span>{% endif %}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% else %}
+<section>
+  <h2>Nothing here yet</h2>
+  <p class="muted">
+    Posts will live here once I move writing onto this site. Until then, everything is on
+    <a href="https://dev.to/shridhar_shah2297">dev.to</a> — the full index is on the
+    <a href="{{ '/#writing' | relative_url }}">home page</a>.
+  </p>
+</section>
+{% endif %}
